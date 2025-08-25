@@ -60,7 +60,13 @@ num install
 # or
 yarn install
 
-3. **Update configuration**
+
+3. **Install Playwright browsers**
+
+npx playwright install
+
+
+4. **Update configuration**
 
 -> Edit config/config.json:
 {
