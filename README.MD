@@ -57,7 +57,7 @@ cd ecom-test-automation
 2. **Install dependencies**
 
 num install
-# or
+or
 yarn install
 
 
@@ -69,15 +69,15 @@ npx playwright install
 4. **Update configuration**
 
 -> Edit config/config.json:
-{
+
+```json{
   "storePassword": "your_store_password_if_any",
   "timeout": 30000,
   "productUrls": [
     "https://example.com/product-1",
     "https://example.com/product-2"
   ],
-  "parallelLimit": 5
-}
+}```
 
 Note: A sample config/config.json file is already provided in the repo. You can use it as-is to run the tests or modify it to include your product URLs and store password.
 
@@ -102,23 +102,20 @@ Note: A sample config/config.json file is already provided in the repo. You can 
       "issues": []
     },
     "addToCartBtn": {
-      "status": "FAIL",
-      "issues": [
-        "Add to Cart button exists but is disabled"
-      ]
+      "status": "PASS",
+      "issues": []
     },
     "variants": {
-      "status": "FAIL",
-      "issues": [
-        "No variants found"
-      ],
-      "variants": []
+      "status": "PASS",
+      "issues": [],
+      "variants": [
+        "Beige",
+        "Black",
+        "Bronze"
+      ]
     },
     "availability": {
-      "status": "FAIL",
-      "issues": [
-        "Product is sold out / unavailable"
-      ]
+      "status": "PASS"
     },
     "metaInfo": {
       "status": "PASS",

@@ -10,23 +10,20 @@
       "issues": []
     },
     "addToCartBtn": {
-      "status": "FAIL",
-      "issues": [
-        "Add to Cart button exists but is disabled"
-      ]
+      "status": "PASS",
+      "issues": []
     },
     "variants": {
-      "status": "FAIL",
-      "issues": [
-        "No variants found"
-      ],
-      "variants": []
+      "status": "PASS",
+      "issues": [],
+      "variants": [
+        "Beige",
+        "Black",
+        "Bronze"
+      ]
     },
     "availability": {
-      "status": "FAIL",
-      "issues": [
-        "Product is sold out / unavailable"
-      ]
+      "status": "PASS"
     },
     "metaInfo": {
       "status": "PASS",
