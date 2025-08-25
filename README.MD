@@ -56,34 +56,40 @@ cd ecom-test-automation
 
 2. **Install dependencies**
 
+```bash
 num install
 or
 yarn install
-
+```
 
 3. **Install Playwright browsers**
 
+```bash
 npx playwright install
-
+```
 
 4. **Update configuration**
 
 -> Edit config/config.json:
 
-```json{
+```json
+{
   "storePassword": "your_store_password_if_any",
   "timeout": 30000,
   "productUrls": [
     "https://example.com/product-1",
     "https://example.com/product-2"
-  ],
-}```
+  ]
+}
+```
 
 Note: A sample config/config.json file is already provided in the repo. You can use it as-is to run the tests or modify it to include your product URLs and store password.
 
 3. **Running the Tool**
 
+```bash
     npm start
+```
 
 > Note: Generated report will be saved to `reports/report.json`.
 
