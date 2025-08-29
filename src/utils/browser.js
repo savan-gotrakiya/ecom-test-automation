@@ -1,13 +1,15 @@
-import { chromium } from "playwright-chromium";
+import chromium from "@sparticuz/chromium";
+import { chromium as pwChromium } from "playwright-core";
 import { logger } from "./logger.js";
 
 export async function launchBrowser() {
   try {
-    // Launch headless Chromium
-    const browser = await chromium.launch({
+    const browser = await pwChromium.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"], // required for serverless
+      executablePath: await chromium.executablePath(),
+      args: chromium.args,
     });
+
     const context = await browser.newContext();
     const page = await context.newPage();
     return { browser, page };
