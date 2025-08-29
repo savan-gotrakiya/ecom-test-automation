@@ -34,7 +34,7 @@ export async function checkVariants(page) {
     // Add detected variants to result
     result.variants = variants;
 
-    console.log("Detected variants:", variants);
+
   } catch (err) {
     result.status = "FAIL";
     result.issues.push("No variants found");

@@ -6,6 +6,5 @@ export function saveReport(results) {
   const reportPath = path.join(__dirname, "./reports/report.json");
   fs.writeFileSync(reportPath, JSON.stringify(results, null, 2));
 
-  console.log(`✅ Report saved: ${reportPath}`);
   return reportPath;
 }

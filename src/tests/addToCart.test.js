@@ -1,3 +1,5 @@
+import { logger } from "../utils/logger.js";
+
 export async function checkAddToCartButton(page) {
   const result = {
     status: "PASS",
@@ -14,19 +16,15 @@ export async function checkAddToCartButton(page) {
       if (isDisabled) {
         result.status = "FAIL";
         result.issues.push("Add to Cart button exists but is disabled");
-        console.log("⚠️ Add to Cart button exists but is disabled");
-      } else {
-        console.log("✅ Add to Cart button exists and is enabled");
       }
     } else {
       result.status = "FAIL";
       result.issues.push("Add to Cart button does NOT exist on the page");
-      console.log("❌ Add to Cart button does NOT exist on the page");
     }
   } catch (err) {
     result.status = "FAIL";
     result.issues.push("Error checking Add to Cart button");
-    console.log("Error in checkAddToCartButton:", err);
+    logger.error("Error in checkAddToCartButton:", err);
   }
 
   return result;

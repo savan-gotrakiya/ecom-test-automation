@@ -39,6 +39,64 @@
           "srcset": "//4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=240 240w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=352 352w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=832 832w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1200 1200w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1600 1600w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1920 1920w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=2560 2560w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=3840 3840w",
           "width": 637,
           "height": 418
+        },
+        {
+          "src": "//4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=3840",
+          "alt": "Fastrack Optimus Pro with 1.43 AMOLED Display",
+          "srcset": "//4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=240 240w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=352 352w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=832 832w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1200 1200w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1600 1600w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1920 1920w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=2560 2560w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=3840 3840w",
+          "width": 320,
+          "height": 319
+        }
+      ]
+    }
+  },
+  {
+    "url": "https://4t1qab-ka.myshopify.com/products/fastrack-optimus-pro-with-1-43-amoled-display?variant=45053061005509",
+    "pageLoad": {
+      "status": "PASS",
+      "issues": []
+    },
+    "elements": {
+      "status": "PASS",
+      "issues": []
+    },
+    "addToCartBtn": {
+      "status": "PASS",
+      "issues": []
+    },
+    "variants": {
+      "status": "FAIL",
+      "issues": [
+        "No variants found"
+      ],
+      "variants": []
+    },
+    "availability": {
+      "status": "PASS"
+    },
+    "metaInfo": {
+      "status": "FAIL",
+      "issues": [
+        "Meta description missing or empty"
+      ]
+    },
+    "image": {
+      "status": "PASS",
+      "issues": [],
+      "images": [
+        {
+          "src": "//4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=3840",
+          "alt": "Fastrack Optimus Pro with 1.43 AMOLED Display",
+          "srcset": "//4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=240 240w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=352 352w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=832 832w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1200 1200w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1600 1600w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1920 1920w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=2560 2560w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=3840 3840w",
+          "width": 776,
+          "height": 774
+        },
+        {
+          "src": "//4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=3840",
+          "alt": "Samsung Galaxy F16 5G (Vibing Blue, 128 GB)  (6 GB RAM)",
+          "srcset": "//4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=240 240w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=352 352w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=832 832w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1200 1200w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1600 1600w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1920 1920w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=2560 2560w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=3840 3840w",
+          "width": 320,
+          "height": 210
         }
       ]
     }

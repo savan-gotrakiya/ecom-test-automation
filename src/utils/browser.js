@@ -1,4 +1,5 @@
 import { chromium } from "playwright";
+import { logger } from "./logger.js";
 
 export async function launchBrowser() {
   try {
@@ -7,7 +8,7 @@ export async function launchBrowser() {
     const page = await context.newPage();
     return { browser, page };
   } catch (error) {
-    console.log("Error in launchBrowser", error);
+    logger.error("Error in launchBrowser", error);
     throw error;
   }
 }

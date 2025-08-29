@@ -1,0 +1,48 @@
+[2025-08-29 12:50:07] [32minfo[39m: Processing product page: https://4t1qab-ka.myshopify.com/products/samsung-galaxy-f16-5g-vibing-blue-128-gb-6-gb-ram?variant=4504101978131790
+[2025-08-29 12:50:10] [32minfo[39m: Password page handled in 3038.60ms
+[2025-08-29 12:50:10] [32minfo[39m: Page load check done in 352.86ms
+[2025-08-29 12:50:40] [32minfo[39m: Critical elements checked in 30026.64ms
+[2025-08-29 12:50:40] [32minfo[39m: Add to cart check done in 1.95ms
+[2025-08-29 12:50:40] [32minfo[39m: Variants check done in 5.75ms
+[2025-08-29 12:50:40] [32minfo[39m: Availability check done in 1.72ms
+[2025-08-29 12:50:40] [32minfo[39m: Meta info check done in 1.39ms
+[2025-08-29 12:50:43] [32minfo[39m: Image check done in 2294.69ms
+[2025-08-29 12:50:43] [32minfo[39m: All product pages processed. Saving report...
+[2025-08-29 12:50:43] [32minfo[39m: Report saved successfully.
+[2025-08-29 12:58:19] [32minfo[39m: Processing product page: https://4t1qab-ka.myshopify.com/products/samsung-galaxy-f16-5g-vibing-blue-128-gb-6-gb-ram?variant=4504101978131790
+[2025-08-29 12:58:20] [32minfo[39m: Password page detected. Entering password...
+[2025-08-29 12:58:21] [32minfo[39m: Password entered. Page unlocked!
+[2025-08-29 12:58:21] [32minfo[39m: Password page handled in 2804.29ms
+[2025-08-29 12:58:22] [32minfo[39m: Page load check done in 311.67ms
+[2025-08-29 12:58:52] [32minfo[39m: Critical elements checked in 30032.60ms
+[2025-08-29 12:58:52] [32minfo[39m: Add to cart check done in 5.28ms
+[2025-08-29 12:58:52] [32minfo[39m: Variants check done in 8.85ms
+[2025-08-29 12:58:52] [32minfo[39m: Availability check done in 1.92ms
+[2025-08-29 12:58:52] [32minfo[39m: Meta info check done in 1.71ms
+[2025-08-29 12:58:54] [32minfo[39m: Image check done in 2505.40ms
+[2025-08-29 12:58:54] [32minfo[39m: All product pages processed. Saving report...
+[2025-08-29 12:58:54] [32minfo[39m: Report saved successfully.
+[2025-08-29 13:05:44] [32minfo[39m: Processing product page: https://4t1qab-ka.myshopify.com/products/samsung-galaxy-f16-5g-vibing-blue-128-gb-6-gb-ram?variant=4504101978131790
+[2025-08-29 13:05:44] [32minfo[39m: Processing product page: https://4t1qab-ka.myshopify.com/products/fastrack-optimus-pro-with-1-43-amoled-display?variant=45053061005509
+[2025-08-29 13:05:45] [32minfo[39m: Password page detected. Entering password...
+[2025-08-29 13:05:45] [32minfo[39m: Password page detected. Entering password...
+[2025-08-29 13:05:47] [32minfo[39m: Password entered. Page unlocked!
+[2025-08-29 13:05:47] [32minfo[39m: Password page handled in 3131.60ms
+[2025-08-29 13:05:47] [32minfo[39m: Password entered. Page unlocked!
+[2025-08-29 13:05:47] [32minfo[39m: Password page handled in 3132.73ms
+[2025-08-29 13:05:47] [32minfo[39m: Page load check done in 448.05ms
+[2025-08-29 13:05:47] [32minfo[39m: Page load check done in 455.23ms
+[2025-08-29 13:06:17] [32minfo[39m: Critical elements checked in 30031.45ms
+[2025-08-29 13:06:17] [32minfo[39m: Critical elements checked in 30038.92ms
+[2025-08-29 13:06:17] [32minfo[39m: Add to cart check done in 4.13ms
+[2025-08-29 13:06:17] [32minfo[39m: Add to cart check done in 4.41ms
+[2025-08-29 13:06:17] [32minfo[39m: Variants check done in 8.32ms
+[2025-08-29 13:06:17] [32minfo[39m: Availability check done in 1.96ms
+[2025-08-29 13:06:17] [32minfo[39m: Meta info check done in 1.72ms
+[2025-08-29 13:06:20] [32minfo[39m: Image check done in 2315.27ms
+[2025-08-29 13:06:47] [32minfo[39m: Variants check done in 30003.24ms
+[2025-08-29 13:06:47] [32minfo[39m: Availability check done in 4.71ms
+[2025-08-29 13:06:47] [32minfo[39m: Meta info check done in 2.75ms
+[2025-08-29 13:06:50] [32minfo[39m: Image check done in 2267.77ms
+[2025-08-29 13:06:50] [32minfo[39m: All product pages processed. Saving report...
+[2025-08-29 13:06:50] [32minfo[39m: Report saved successfully.
