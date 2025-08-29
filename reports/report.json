@@ -1,61 +1,21 @@
 [
   {
-    "url": "https://4t1qab-ka.myshopify.com/products/samsung-galaxy-f16-5g-vibing-blue-128-gb-6-gb-ram?variant=4504101978131790",
+    "url": "https://www.abbottlyon.com/products/made-mine-fine-name-necklace-gold",
     "pageLoad": {
       "status": "PASS",
       "issues": []
     },
     "elements": {
-      "status": "PASS",
-      "issues": []
-    },
-    "addToCartBtn": {
-      "status": "PASS",
-      "issues": []
-    },
-    "variants": {
-      "status": "PASS",
-      "issues": [],
-      "variants": [
-        "Beige",
-        "Black",
-        "Bronze"
+      "status": "FAIL",
+      "issues": [
+        "Description missing"
       ]
     },
-    "availability": {
-      "status": "PASS"
-    },
-    "metaInfo": {
-      "status": "PASS",
-      "issues": []
-    },
-    "image": {
-      "status": "PASS",
-      "issues": [],
-      "images": [
-        {
-          "src": "//4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=3840",
-          "alt": "Samsung Galaxy F16 5G (Vibing Blue, 128 GB)  (6 GB RAM)",
-          "srcset": "//4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=240 240w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=352 352w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=832 832w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1200 1200w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1600 1600w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=1920 1920w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=2560 2560w, //4t1qab-ka.myshopify.com/cdn/shop/files/FJVYfarWYAECQ-Y-photoutils.com_ee24fe25-b175-4287-a357-6e7fcc05eb87.webp?v=1756141644&width=3840 3840w",
-          "width": 637,
-          "height": 418
-        }
-      ]
-    }
-  },
-  {
-    "url": "https://4t1qab-ka.myshopify.com/products/fastrack-optimus-pro-with-1-43-amoled-display?variant=45053061005509",
-    "pageLoad": {
-      "status": "PASS",
-      "issues": []
-    },
-    "elements": {
-      "status": "PASS",
-      "issues": []
-    },
     "addToCartBtn": {
-      "status": "PASS",
-      "issues": []
+      "status": "FAIL",
+      "issues": [
+        "Add to Cart button does NOT exist on the page"
+      ]
     },
     "variants": {
       "status": "FAIL",
@@ -65,26 +25,19 @@
       "variants": []
     },
     "availability": {
-      "status": "PASS"
-    },
-    "metaInfo": {
       "status": "FAIL",
       "issues": [
-        "Meta description missing or empty"
+        "Add to Cart button not found — Product availability unknown"
       ]
+    },
+    "metaInfo": {
+      "status": "PASS",
+      "issues": []
     },
     "image": {
       "status": "PASS",
       "issues": [],
-      "images": [
-        {
-          "src": "//4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=3840",
-          "alt": "Fastrack Optimus Pro with 1.43 AMOLED Display",
-          "srcset": "//4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=240 240w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=352 352w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=832 832w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1200 1200w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1600 1600w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=1920 1920w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=2560 2560w, //4t1qab-ka.myshopify.com/cdn/shop/files/Screenshot2025-08-29at1.02.26PM.png?v=1756452763&width=3840 3840w",
-          "width": 776,
-          "height": 774
-        }
-      ]
+      "images": []
     }
   }
 ]

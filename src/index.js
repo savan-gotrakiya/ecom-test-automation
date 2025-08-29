@@ -117,12 +117,12 @@ async function processProductPage(browser, url, config) {
 /**
  * Main function
  */
-(async () => {
+export async function executeProductCheck(urls) {
   const { browser } = await launchBrowser();
   const results = [];
   const concurrency = 5;
 
-  const urlChunks = chunkArray(config.productUrls, concurrency);
+  const urlChunks = chunkArray(urls, concurrency);
 
   // Process URLs in chunks (5 at a time)
   for (const chunk of urlChunks) {
@@ -137,4 +137,8 @@ async function processProductPage(browser, url, config) {
   logger.info("All product pages processed. Saving report...");
   saveReport(results);
   logger.info("Report saved successfully.");
-})();
+  return results;
+}
+
+// URL:
+// https://www.abbottlyon.com/products/made-mine-fine-name-necklace-gold
