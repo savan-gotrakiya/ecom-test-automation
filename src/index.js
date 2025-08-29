@@ -13,6 +13,7 @@ import { checkMetaInfo } from "./tests/productMeta.test.js";
 import { saveReport } from "./utils/saveReport.js";
 import { logger } from "./utils/logger.js";
 import { Profiler } from "./utils/profiler.js";
+import { v4 as uuidv4 } from "uuid";
 
 const configPath = path.resolve("./config/config.json");
 const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
@@ -29,8 +30,10 @@ function chunkArray(array, chunkSize) {
  * Process a single product page: all checks
  */
 async function processProductPage(browser, url, config) {
+  const reqId = uuidv4().split("-")[0];
+
   const profiler = new Profiler();
-  logger.info(`Processing product page: ${url}`);
+  logger.info(`${reqId} Processing product page: ${url}`);
 
   const page = await browser.newPage();
 
@@ -41,45 +44,53 @@ async function processProductPage(browser, url, config) {
   try {
     // Step 1: Handle password page
     profiler.start("passwordPage");
-    await handlePasswordPage(page, url, config.storePassword);
-    logger.info(`Password page handled in ${profiler.end("passwordPage")}`);
+    await handlePasswordPage(page, url, config.storePassword, reqId);
+    logger.info(
+      `${reqId} Password page handled in ${profiler.end("passwordPage")}`
+    );
 
     // Step 2: Page load
     profiler.start("pageLoad");
     const pageLoad = await checkPageLoad(page, url, config.timeout);
-    logger.info(`Page load check done in ${profiler.end("pageLoad")}`);
+    logger.info(`${reqId} Page load check done in ${profiler.end("pageLoad")}`);
 
     // Step 3: Critical elements
     profiler.start("criticalElements");
     const elements = await checkCriticalElements(page);
     logger.info(
-      `Critical elements checked in ${profiler.end("criticalElements")}`
+      `${reqId} Critical elements checked in ${profiler.end(
+        "criticalElements"
+      )}`
     );
 
     // Step 4: Add to cart
     profiler.start("addToCart");
     const addToCartBtn = await checkAddToCartButton(page);
-    logger.info(`Add to cart check done in ${profiler.end("addToCart")}`);
+    logger.info(
+      `${reqId} Add to cart check done in ${profiler.end("addToCart")}`
+    );
 
     // Step 5: Variants
     profiler.start("variants");
     const variants = await checkVariants(page);
-    logger.info(`Variants check done in ${profiler.end("variants")}`);
+    logger.info(`${reqId} Variants check done in ${profiler.end("variants")}`);
 
     // Step 6: Availability
     profiler.start("availability");
     const availability = await checkProductAvailability(page);
-    logger.info(`Availability check done in ${profiler.end("availability")}`);
+    logger.info(
+      `${reqId} Availability check done in ${profiler.end("availability")}`
+    );
 
     // Step 7: Meta info
     profiler.start("metaInfo");
     const metaInfo = await checkMetaInfo(page);
-    logger.info(`Meta info check done in ${profiler.end("metaInfo")}`);
+    logger.info(`${reqId} Meta info check done in ${profiler.end("metaInfo")}`);
 
     // Step 8: Images
     profiler.start("images");
     const image = await checkProductImage(page, url);
-    logger.info(`Image check done in ${profiler.end("images")}`);
+    logger.info(`${reqId} Image check done in ${profiler.end("images")}`);
 
     return {
       url,
@@ -96,7 +107,7 @@ async function processProductPage(browser, url, config) {
       securityIssues,
     };
   } catch (err) {
-    logger.error(`Error processing ${url}: ${err.message}`);
+    logger.error(` ${reqId} Error processing ${url}: ${err.message}`);
     throw err;
   } finally {
     await page.close();

@@ -25,10 +25,10 @@ async function detectProductPrice(page) {
 }
 
 async function detectProductTitle(page) {
-  const titleElement = await page.$("h1, h2, .product-title");
-  let title = "";
+const titleElement = await page.$("h1, h2, .product-title, div[class*='product_title'] p"); 
+let title = "";
   if (titleElement) {
-    title = await page.textContent("h1, h2, .product-title");
+    title = await page.textContent("h1, h2, .product-title, div[class*='product_title'] p");
   } else {
     // Fallback: find largest heading
     const headings = await page.$$eval("h1, h2, h3", (nodes) =>

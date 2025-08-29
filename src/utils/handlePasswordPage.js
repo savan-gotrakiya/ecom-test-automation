@@ -1,6 +1,6 @@
 import { logger } from "./logger.js";
 
-export async function handlePasswordPage(page, url, password) {
+export async function handlePasswordPage(page, url, password, reqId) {
   try {
     await page.goto(url, {
       waitUntil: "domcontentloaded",
@@ -11,7 +11,7 @@ export async function handlePasswordPage(page, url, password) {
       .count();
 
     if (isPasswordPage > 0) {
-      logger.info("Password page detected. Entering password...");
+      logger.info(`${reqId} Password page detected. Entering password...`);
 
       // If button to reveal password input exists, click it
       const showPasswordBtn = page.locator(
@@ -31,7 +31,7 @@ export async function handlePasswordPage(page, url, password) {
         page.click('button[name="commit"], button[type="submit"]'),
       ]);
 
-      logger.info("Password entered. Page unlocked!");
+      logger.info(`${reqId} Password entered. Page unlocked!`);
     }
   } catch (error) {
     logger.error("Error in handlePasswordPage: ", error);
