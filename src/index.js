@@ -10,7 +10,6 @@ import { checkVariants } from "./tests/productVariants.test.js";
 import { checkProductAvailability } from "./tests/productAvailability.test.js";
 import { checkCriticalElements } from "./tests/productPage.test.js";
 import { checkMetaInfo } from "./tests/productMeta.test.js";
-import { saveReport } from "./utils/saveReport.js";
 import { logger } from "./utils/logger.js";
 import { Profiler } from "./utils/profiler.js";
 import { v4 as uuidv4 } from "uuid";
@@ -134,9 +133,6 @@ export async function executeProductCheck(urls) {
 
   await browser.close();
 
-  logger.info("All product pages processed. Saving report...");
-  saveReport(results);
-  logger.info("Report saved successfully.");
   return results;
 }
 
