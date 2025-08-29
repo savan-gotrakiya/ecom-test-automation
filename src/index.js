@@ -117,23 +117,27 @@ async function processProductPage(browser, url, config) {
  * Main function
  */
 export async function executeProductCheck(urls) {
-  const { browser } = await launchBrowser();
-  const results = [];
-  const concurrency = 5;
+  try {
+    const { browser } = await launchBrowser();
+    const results = [];
+    const concurrency = 5;
 
-  const urlChunks = chunkArray(urls, concurrency);
+    const urlChunks = chunkArray(urls, concurrency);
 
-  // Process URLs in chunks (5 at a time)
-  for (const chunk of urlChunks) {
-    const chunkResults = await Promise.allSettled(
-      chunk.map((url) => processProductPage(browser, url, config))
-    );
-    results.push(...chunkResults.map((doc) => doc.value));
+    // Process URLs in chunks (5 at a time)
+    for (const chunk of urlChunks) {
+      const chunkResults = await Promise.allSettled(
+        chunk.map((url) => processProductPage(browser, url, config))
+      );
+      results.push(...chunkResults.map((doc) => doc.value));
+    }
+
+    return results;
+  } catch (error) {
+    logger.error(`Error in executeProductCheck: ${error.message}`);
+  } finally {
+    await browser.close();
   }
-
-  await browser.close();
-
-  return results;
 }
 
 // URL:
