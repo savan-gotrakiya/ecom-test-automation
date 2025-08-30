@@ -49,7 +49,6 @@ The tool uses **Playwright** for browser automation. For each product URL, the f
 
 > You can use the cloud endpoint hosted on Vercel:
 
-**Endpoint:**
 URL: https://ecom-test-automation.vercel.app/
 
 
@@ -59,7 +58,7 @@ URL: https://ecom-test-automation.vercel.app/
 2. Click **Submit**.  
 3. The service will return a full **JSON report** with the results.  
 
-> **Note:** Each product check may take up to **1 minute** due to full page validation.
+> **Note:** Product check may take up to **1 minute** due to full page validation.
 
 ![Form](assets/form.png)
 ![Report](assets/report.png)
