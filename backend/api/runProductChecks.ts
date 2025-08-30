@@ -1,5 +1,4 @@
-// frontend/pages/api/runProductChecks.ts
-import { executeProductCheck } from "../../../backend/index.js";
+import { executeProductCheck } from "../index";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
