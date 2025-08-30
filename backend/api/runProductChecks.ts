@@ -2,6 +2,14 @@ import { executeProductCheck } from "../index";
 import { Request, Response } from "express";
 
 export default async function handler(req: Request, res: Response) {
+  // Allow CORS
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://ecom-test-automation.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   if (req.method !== "POST") {
     return res
       .status(405)
