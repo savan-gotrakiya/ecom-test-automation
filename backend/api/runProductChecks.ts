@@ -27,8 +27,8 @@ export default async function handler(req: Request, res: Response) {
 
   try {
     const results = await executeProductCheck({ urls, password });
-    res.status(200).json({ success: true, data: results });
+    return res.status(200).json(results);
   } catch (err: any) {
-    res.status(500).json({ success: false, error: err.message });
+    return res.status(500).json({ success: false, error: err.message });
   }
 }

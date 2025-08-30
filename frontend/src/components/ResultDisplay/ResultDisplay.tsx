@@ -11,7 +11,7 @@ const ResultDisplay: React.FC<Props> = ({ results }) => {
 
   return (
     <div className={styles.container}>
-      {results.map((r, i) => {
+      {(results || []).map((r, i) => {
         const checks = [
           {
             label: "Page Load",
