@@ -14,7 +14,14 @@ const ResultDisplay: React.FC<Props> = ({ results }) => {
       {(results || []).map((r, i) => {
         const imagesCheckIssues =
           (r.images || [])?.flatMap(
-            (img: { issues: any }) => img.issues || []
+            (img: any) =>
+              (img.issues || [])?.map((i: any) =>
+                typeof i === "string"
+                  ? i
+                  : (i.issues || [])?.length
+                  ? (i.issues || []).join(", ")
+                  : JSON.stringify(i || '')
+              ) || []
           ) || [];
         const imagesCheckStatus = imagesCheckIssues.length ? "FAIL" : "PASS";
         const checks = [
