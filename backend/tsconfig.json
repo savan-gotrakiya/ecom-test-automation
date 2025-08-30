@@ -15,5 +15,5 @@
       "@tests/*": ["tests/*"]
     }
   },
-  "include": ["tests", "utils", "types", "index.ts", "server.ts"]
+  "include": ["tests", "utils", "types", "index.ts", "server.ts", "api"]
 }

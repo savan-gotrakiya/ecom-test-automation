@@ -1,6 +1,7 @@
 import { executeProductCheck } from "../index";
+import { Request, Response } from "express";
 
-export default async function handler(req, res) {
+export default async function handler(req: Request, res: Response) {
   if (req.method !== "POST") {
     return res
       .status(405)
@@ -17,7 +18,7 @@ export default async function handler(req, res) {
   try {
     const results = await executeProductCheck({ urls, password });
     res.status(200).json({ success: true, data: results });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ success: false, error: err.message });
   }
 }
