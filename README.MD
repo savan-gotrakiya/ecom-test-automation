@@ -45,6 +45,26 @@ The tool uses **Playwright** for browser automation. For each product URL, the f
 
 ---
 
+## Cloud Execution
+
+> You can use the cloud endpoint hosted on Vercel:
+
+**Endpoint:**
+URL: https://ecom-test-automation.vercel.app/
+
+
+**Steps to use:**
+
+1. Enter a product URL in the input field.  
+2. Click **Submit**.  
+3. The service will return a full **JSON report** with the results.  
+
+> **Note:** Each product check may take up to **1 minute** due to full page validation.
+
+![Form](assets/form.png)
+![Report](assets/report.png)
+
+
 ## Setup & Local Execution
 
 1. **Clone the repository**
@@ -68,30 +88,29 @@ yarn install
 npx playwright install
 ```
 
-4. **Update configuration**
-
--> Edit config/config.json:
-
-```json
-{
-  "storePassword": "your_store_password_if_any",
-  "timeout": 30000,
-  "productUrls": [
-    "https://example.com/product-1",
-    "https://example.com/product-2"
-  ]
-}
-```
-
-Note: A sample config/config.json file is already provided in the repo. You can use it as-is to run the tests or modify it to include your product URLs and store password.
-
-3. **Running the Tool**
+4. **Build and start the backend**
 
 ```bash
-    npm start
+yarn build
+yarn start
 ```
 
-> Note: Generated report will be saved to `reports/report.json`.
+5. **Test the API**
+
+-> You can send a POST request with product URLs to the local endpoint:
+
+```bash
+curl --location 'http://localhost:4000/api/runProductChecks' \
+--header 'Content-Type: application/json' \
+--data '{
+  "urls": [
+    "https://www.abbottlyon.com/products/personalised-initial-droplet-birthstone-necklace-silver?variant=40137571762242"
+  ]
+}'
+```
+
+> The API will return a JSON report similar to the Sample Test Report described below.
+> Note: Execution may take up to 1 minute per product page.
 
 ---
 ## Sample Test Report
