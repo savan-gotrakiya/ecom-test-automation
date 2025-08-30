@@ -27,10 +27,7 @@ export async function launchBrowser(): Promise<BrowserInstance> {
       args,
     });
 
-    const context = await browser.newContext();
-    const page: Page = await context.newPage();
-
-    return { browser, page };
+    return { browser };
   } catch (error: unknown) {
     logger.error("Error in launchBrowser", error);
     throw error;

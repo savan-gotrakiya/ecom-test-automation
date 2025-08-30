@@ -62,8 +62,6 @@ async function findAddToCartInFrame(frame) {
 async function checkAddToCartButton(page) {
     const result = { status: "PASS", issues: [] };
     try {
-        await page.waitForLoadState("networkidle", { timeout: 15000 });
-        await page.waitForTimeout(2000);
         let addToCartButton = null;
         const frames = [page.mainFrame(), ...page.frames()];
         for (const frame of frames) {

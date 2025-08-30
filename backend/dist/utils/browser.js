@@ -61,9 +61,7 @@ async function launchBrowser() {
             executablePath,
             args,
         });
-        const context = await browser.newContext();
-        const page = await context.newPage();
-        return { browser, page };
+        return { browser };
     }
     catch (error) {
         logger_1.logger.error("Error in launchBrowser", error);
