@@ -50,7 +50,7 @@ async function checkProductImage(page, url) {
         result.status = "FAIL";
         result.issues.push({
             src: null,
-            issues: [error instanceof Error ? error.message : String(error)],
+            issues: ["Failed to check product image"],
         });
     }
     return result;

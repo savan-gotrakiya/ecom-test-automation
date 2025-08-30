@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkVariants = checkVariants;
+const logger_1 = require("../utils/logger");
 async function checkVariants(page) {
     const result = {
         status: "PASS",
@@ -33,14 +34,10 @@ async function checkVariants(page) {
             result.status = "FAIL";
             result.issues.push("No variant options found inside containers");
         }
-        else {
-            console.log("✅ Variants found:", variants);
-        }
     }
     catch (err) {
-        result.status = "FAIL";
-        result.issues.push("Error checking variants");
-        console.error("❌ Error in checkVariants:", err);
+        logger_1.logger.error(`Error in checkVariants`, err.message);
+        return { status: "FAIL", issues: ["Failed to check variants"] };
     }
     return result;
 }

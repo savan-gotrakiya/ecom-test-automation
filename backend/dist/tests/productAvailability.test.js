@@ -19,10 +19,7 @@ async function checkProductAvailability(page) {
     catch (error) {
         return {
             status: "FAIL",
-            issues: [
-                "Error checking product availability",
-                error instanceof Error ? error.message : String(error),
-            ],
+            issues: ["Failed to check  product availability"],
         };
     }
 }
