@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 30px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    background: #fff;
+    overflow-x: auto;
+    /* allow horizontal scroll if table is too wide */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    /* fix column widths */
+}
+
+.table th,
+.table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.scrollCell {
+    max-height: 150px;
+    /* limit height */
+    overflow-y: auto;
+    /* vertical scroll if many issues */
+    white-space: pre-wrap;
+    /* wrap long strings */
+}

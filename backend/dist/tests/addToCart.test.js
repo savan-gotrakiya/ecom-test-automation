@@ -1,0 +1,92 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.checkAddToCartButton = checkAddToCartButton;
+const logger_1 = require("../utils/logger");
+async function deepSearchShadow(el) {
+    const shadowRootHandle = await el.evaluateHandle((e) => e.shadowRoot);
+    if (!shadowRootHandle)
+        return null;
+    const foundHandle = await shadowRootHandle.evaluateHandle((root) => {
+        const allEls = Array.from(root.querySelectorAll("*"));
+        for (const el of allEls) {
+            const text = (el.textContent || "").toLowerCase();
+            const tag = el.tagName.toLowerCase();
+            const role = el.getAttribute("role");
+            const clickable = ["button", "a", "input"].includes(tag) ||
+                role === "button" ||
+                window.getComputedStyle(el).cursor === "pointer";
+            if (clickable &&
+                /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)) {
+                return el;
+            }
+        }
+        return null;
+    });
+    if ((await foundHandle.jsonValue()) !== null)
+        return foundHandle.asElement();
+    return null;
+}
+async function findAddToCartInFrame(frame) {
+    // Try known selectors first
+    const selectors = [
+        "button.addtocart",
+        "button.btn-atc",
+        "[data-add-to-cart]",
+        "[data-product-form-submit]",
+    ];
+    for (const sel of selectors) {
+        const btn = await frame.$(sel);
+        if (btn)
+            return btn;
+    }
+    // Generic search in DOM
+    const allEls = await frame.$$("body *");
+    for (const el of allEls) {
+        const text = ((await el.innerText()) || "").toLowerCase();
+        const tag = await el.evaluate((e) => e.tagName.toLowerCase());
+        const role = await el.evaluate((e) => e.getAttribute("role"));
+        const clickable = ["button", "a", "input"].includes(tag) ||
+            role === "button" ||
+            (await el.evaluate((e) => window.getComputedStyle(e).cursor === "pointer"));
+        if (clickable &&
+            /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)) {
+            return el;
+        }
+        // Check shadow DOM
+        const shadowBtn = await deepSearchShadow(el);
+        if (shadowBtn)
+            return shadowBtn;
+    }
+    return null;
+}
+async function checkAddToCartButton(page) {
+    const result = { status: "PASS", issues: [] };
+    try {
+        await page.waitForLoadState("networkidle", { timeout: 15000 });
+        await page.waitForTimeout(2000);
+        let addToCartButton = null;
+        const frames = [page.mainFrame(), ...page.frames()];
+        for (const frame of frames) {
+            addToCartButton = await findAddToCartInFrame(frame);
+            if (addToCartButton)
+                break;
+        }
+        if (!addToCartButton) {
+            result.status = "FAIL";
+            result.issues.push("Add to Cart button does NOT exist on the page (DOM + iframes + shadow DOM)");
+        }
+        else {
+            const disabled = await addToCartButton.evaluate((btn) => btn.disabled);
+            if (disabled) {
+                result.status = "FAIL";
+                result.issues.push("Add to Cart button exists but is disabled/unavailable");
+            }
+        }
+    }
+    catch (err) {
+        result.status = "FAIL";
+        result.issues.push("Error checking Add to Cart button");
+        logger_1.logger.error("Error in checkAddToCartButton:", err);
+    }
+    return result;
+}
