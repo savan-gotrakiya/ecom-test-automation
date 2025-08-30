@@ -12,6 +12,11 @@ const ResultDisplay: React.FC<Props> = ({ results }) => {
   return (
     <div className={styles.container}>
       {(results || []).map((r, i) => {
+        const imagesCheckIssues =
+          (r.images || [])?.flatMap(
+            (img: { issues: any }) => img.issues || []
+          ) || [];
+        const imagesCheckStatus = imagesCheckIssues.length ? "FAIL" : "PASS";
         const checks = [
           {
             label: "Page Load",
@@ -37,6 +42,11 @@ const ResultDisplay: React.FC<Props> = ({ results }) => {
             label: "Availability",
             status: r.availability?.issues?.length ? "FAIL" : "PASS",
             issues: r.availability?.issues || [],
+          },
+          {
+            label: "Images",
+            status: imagesCheckStatus,
+            issues: imagesCheckIssues,
           },
           {
             label: "Meta Info (Page title, description)",

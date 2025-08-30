@@ -1,4 +1,3 @@
-// src/tests/productAvailability.test.ts
 import { Page, ElementHandle } from "playwright-core";
 import { CheckResult } from "../types";
 
@@ -6,30 +5,60 @@ export async function checkProductAvailability(
   page: Page
 ): Promise<CheckResult> {
   try {
+    const issues: string[] = [];
+
+    // Check Add to Cart button
     const addToCartButton: ElementHandle<Element> | null = await page.$(
       "button.add-to-cart-button"
     );
-
-    if (!addToCartButton) {
-      return {
-        status: "FAIL",
-        issues: ["Add to Cart button not found — Product availability unknown"],
-      };
+    if (addToCartButton) {
+      const isDisabled: boolean = await addToCartButton.evaluate(
+        (btn: HTMLButtonElement) =>
+          btn.disabled || btn.getAttribute("aria-disabled") === "true"
+      );
+      if (isDisabled) issues.push("Product is sold out / unavailable");
     }
 
-    const isDisabled: boolean = await addToCartButton.evaluate(
-      (btn: HTMLButtonElement) => btn.disabled
-    );
-
-    if (isDisabled) {
-      return { status: "FAIL", issues: ["Product is sold out / unavailable"] };
+    // Check for "Sold Out" text
+    const soldOutTextSelectors = [
+      ".product-status",
+      ".sold-out",
+      ".out-of-stock",
+    ];
+    for (const selector of soldOutTextSelectors) {
+      const el = await page.$(selector);
+      if (el) {
+        const text = await el.evaluate((node) =>
+          node.textContent?.toLowerCase()
+        );
+        if (text?.includes("sold out") || text?.includes("out of stock")) {
+          issues.push(`Product marked unavailable via text: "${text.trim()}"`);
+          break;
+        }
+      }
     }
 
-    return { status: "PASS", issues: [] };
+    // Optional: Check variant dropdowns
+    const variantSelect = await page.$("select#ProductSelect-product-template");
+    if (variantSelect) {
+      const options = await variantSelect.$$eval("option", (opts) =>
+        opts.map((o) => o.textContent?.toLowerCase() || "")
+      );
+      if (
+        options.length &&
+        options.every(
+          (o) => o.includes("sold out") || o.includes("unavailable")
+        )
+      ) {
+        issues.push("All product variants are sold out");
+      }
+    }
+
+    return { status: issues.length > 0 ? "FAIL" : "PASS", issues };
   } catch (error: unknown) {
     return {
       status: "FAIL",
-      issues: ["Failed to check  product availability"],
+      issues: ["Unable to determine product availability"],
     };
   }
 }

@@ -60,7 +60,6 @@ async function findAddToCartInFrame(frame) {
     return null;
 }
 async function checkAddToCartButton(page) {
-    const result = { status: "PASS", issues: [] };
     try {
         let addToCartButton = null;
         const frames = [page.mainFrame(), ...page.frames()];
@@ -69,22 +68,32 @@ async function checkAddToCartButton(page) {
             if (addToCartButton)
                 break;
         }
-        if (!addToCartButton) {
-            result.status = "FAIL";
-            result.issues.push("Add to Cart button does NOT exist on the page (DOM + iframes + shadow DOM)");
-        }
-        else {
-            const disabled = await addToCartButton.evaluate((btn) => btn.disabled);
-            if (disabled) {
-                result.status = "FAIL";
-                result.issues.push("Add to Cart button exists but is disabled/unavailable");
+        if (addToCartButton) {
+            // Check if button is disabled via attribute
+            const isDisabledAttr = await addToCartButton.evaluate((btn) => btn.disabled || btn.getAttribute("aria-disabled") === "true");
+            let isClickable = false;
+            try {
+                // Wait for the button to be visible and enabled
+                await addToCartButton.waitForElementState("visible");
+                await addToCartButton.waitForElementState("enabled");
+                // Try a trial click to confirm
+                await addToCartButton.click({ trial: true });
+                isClickable = true;
+            }
+            catch {
+                isClickable = false;
+            }
+            if (!isClickable && !isDisabledAttr) {
+                return {
+                    status: "FAIL",
+                    issues: ["Add to Cart button not found or disabled"],
+                };
             }
         }
+        return { status: "PASS", issues: [] };
     }
     catch (err) {
-        result.status = "FAIL";
-        result.issues.push("Error checking Add to Cart button");
         logger_1.logger.error("Error in checkAddToCartButton:", err);
+        return { status: "FAIL", issues: ["Failed to check checkAddToCartButton"] };
     }
-    return result;
 }

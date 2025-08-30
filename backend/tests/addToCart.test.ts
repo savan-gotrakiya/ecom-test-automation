@@ -85,7 +85,6 @@ async function findAddToCartInFrame(
 }
 
 export async function checkAddToCartButton(page: Page): Promise<CheckResult> {
-  const result: CheckResult = { status: "PASS", issues: [] };
   try {
     let addToCartButton: ElementHandle<Element> | null = null;
 
@@ -95,26 +94,38 @@ export async function checkAddToCartButton(page: Page): Promise<CheckResult> {
       if (addToCartButton) break;
     }
 
-    if (!addToCartButton) {
-      result.status = "FAIL";
-      result.issues.push(
-        "Add to Cart button does NOT exist on the page (DOM + iframes + shadow DOM)"
+    if (addToCartButton) {
+      // Check if button is disabled via attribute
+      const isDisabledAttr = await addToCartButton.evaluate(
+        (btn: HTMLButtonElement) =>
+          btn.disabled || btn.getAttribute("aria-disabled") === "true"
       );
-    } else {
-      const disabled = await addToCartButton.evaluate(
-        (btn) => (btn as HTMLButtonElement).disabled
-      );
-      if (disabled) {
-        result.status = "FAIL";
-        result.issues.push(
-          "Add to Cart button exists but is disabled/unavailable"
-        );
+
+      let isClickable = false;
+
+      try {
+        // Wait for the button to be visible and enabled
+        await addToCartButton.waitForElementState("visible");
+        await addToCartButton.waitForElementState("enabled");
+
+        // Try a trial click to confirm
+        await addToCartButton.click({ trial: true });
+        isClickable = true;
+      } catch {
+        isClickable = false;
+      }
+
+      if (!isClickable && !isDisabledAttr) {
+        return {
+          status: "FAIL",
+          issues: ["Add to Cart button not found or disabled"],
+        };
       }
     }
+
+    return { status: "PASS", issues: [] };
   } catch (err) {
-    result.status = "FAIL";
-    result.issues.push("Error checking Add to Cart button");
     logger.error("Error in checkAddToCartButton:", err);
+    return { status: "FAIL", issues: ["Failed to check checkAddToCartButton"] };
   }
-  return result;
 }
