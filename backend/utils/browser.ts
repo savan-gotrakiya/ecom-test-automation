@@ -1,6 +1,6 @@
 import { Page, Browser, chromium as pwChromium } from "playwright-core";
 import chromiumServerless from "@sparticuz/chromium";
-import { logger } from "@utils/logger";
+import { logger } from "./logger";
 import { BrowserInstance } from "../types";
 
 const isServerless = !!process.env.VERCEL; // true on Vercel

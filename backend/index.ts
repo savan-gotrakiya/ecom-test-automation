@@ -1,20 +1,17 @@
-import { launchBrowser } from "@utils/browser";
-import { checkPageLoad } from "@tests/pageLoad.test";
-import { checkProductImage } from "@tests/productImage.test";
-import { handlePasswordPage } from "@utils/handlePasswordPage";
-import { checkAddToCartButton } from "@tests/addToCart.test";
-import { captureConsoleAndNetworkErrors } from "@utils/consoleAndNetwork";
-import { checkVariants } from "@tests/productVariants.test";
-import { checkProductAvailability } from "@tests/productAvailability.test";
-import { checkCriticalElements } from "@tests/productPage.test";
-import { checkMetaInfo } from "@tests/productMeta.test";
-import { logger } from "@utils/logger";
-import { Profiler } from "@utils/profiler";
+import { launchBrowser } from "./utils/browser";
+import { checkPageLoad } from "./tests/pageLoad.test";
+import { checkProductImage } from "./tests/productImage.test";
+import { handlePasswordPage } from "./utils/handlePasswordPage";
+import { checkAddToCartButton } from "./tests/addToCart.test";
+import { captureConsoleAndNetworkErrors } from "./utils/consoleAndNetwork";
+import { checkVariants } from "./tests/productVariants.test";
+import { checkProductAvailability } from "./tests/productAvailability.test";
+import { checkCriticalElements } from "./tests/productPage.test";
+import { checkMetaInfo } from "./tests/productMeta.test";
+import { logger } from "./utils/logger";
+import { Profiler } from "./utils/profiler";
 import { v4 as uuidv4 } from "uuid";
-import {
-  ProcessProductPageInput,
-  ProductCheckResult,
-} from "@types-custom/product";
+import { ProcessProductPageInput, ProductCheckResult } from "./types";
 import { chunk } from "lodash";
 
 /**
