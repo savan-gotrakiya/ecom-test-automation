@@ -1,108 +1,129 @@
 // src/tests/productPage.test.ts
 import { Page, ElementHandle } from "playwright-core";
 import { CheckResult } from "../types";
+import { logger } from "../utils/logger";
 
+async function detectProductPrice(
+  page: Page
+): Promise<string | undefined | null> {
+  try {
+    const selectors = [".price-container", ".product-price", ".price"];
+    let priceText: string | null = null;
 
-async function detectProductPrice(page: Page): Promise<string | null> {
-  const selectors = [".price-container", ".product-price", ".price"];
-  let priceText: string | null = null;
-
-  for (const selector of selectors) {
-    try {
-      await page.waitForSelector(selector, { timeout: 10000 });
-      priceText = await page.textContent(selector);
-      if (priceText) break;
-    } catch {
-      // Ignore and try next selector
+    for (const selector of selectors) {
+      try {
+        await page.waitForSelector(selector, { timeout: 10000 });
+        priceText = await page.textContent(selector);
+        if (priceText) break;
+      } catch {
+        // Ignore and try next selector
+      }
     }
-  }
 
-  if (!priceText) {
-    // Fallback: Search entire page HTML with regex
-    const html = await page.content();
-    const match = html.match(
-      /(Rs\.?|INR|₹|\$|€|¥)\s?\d{1,3}(,\d{3})*(\.\d{1,2})?/
-    );
-    if (match) priceText = match[0];
-  }
+    if (!priceText) {
+      // Fallback: Search entire page HTML with regex
+      const html = await page.content();
+      const match = html.match(
+        /(Rs\.?|INR|₹|\$|€|¥)\s?\d{1,3}(,\d{3})*(\.\d{1,2})?/
+      );
+      if (match) priceText = match[0];
+    }
 
-  return priceText;
+    return priceText;
+  } catch (error: any) {
+    logger.error(`Error processing detectProductPrice`, error.message);
+  }
 }
 
-async function detectProductTitle(page: Page): Promise<string | null> {
-  const titleElement: ElementHandle<Element> | null = await page.$(
-    "h1, h2, .product-title, div[class*='product_title'] p"
-  );
-
-  let title: string | null = null;
-
-  if (titleElement) {
-    title = (await titleElement.textContent())?.trim() || null;
-  } else {
-    // Fallback: find largest heading
-    const headings = await page.$$eval("h1, h2, h3", (nodes) =>
-      nodes.map((n) => ({
-        text: n.textContent?.trim() || "",
-        size: parseInt(window.getComputedStyle(n).fontSize),
-      }))
+async function detectProductTitle(
+  page: Page
+): Promise<string | null | undefined> {
+  try {
+    const titleElement: ElementHandle<Element> | null = await page.$(
+      "h1, h2, .product-title, div[class*='product_title'] p"
     );
-    if (headings.length > 0) {
-      title = headings.sort((a, b) => b.size - a.size)[0].text;
-    }
-  }
 
-  return title;
+    let title: string | null = null;
+
+    if (titleElement) {
+      title = (await titleElement.textContent())?.trim() || null;
+    } else {
+      // Fallback: find largest heading
+      const headings = await page.$$eval("h1, h2, h3", (nodes) =>
+        nodes.map((n) => ({
+          text: n.textContent?.trim() || "",
+          size: parseInt(window.getComputedStyle(n).fontSize),
+        }))
+      );
+      if (headings.length > 0) {
+        title = headings.sort((a, b) => b.size - a.size)[0].text;
+      }
+    }
+
+    return title;
+  } catch (error: any) {
+    logger.error(`Error processing detectProductTitle`, error.message);
+  }
 }
 
-export async function detectProductDescription(page: Page): Promise<string | null> {
-  // 1. Meta description (SEO)
-  const metaDesc = await page.$eval(
-    'meta[name="description"]',
-    el => (el as HTMLMetaElement).content.trim()
-  ).catch(() => null);
-  if (metaDesc) return metaDesc;
-
-  // 2. Common description selectors
-  const selectors = [
-    "#description",
-    ".product-description",
-    ".description",
-    "[aria-label*='description' i]",
-    "[id*='description' i]",
-    "[class*='description' i]",
-  ];
-
-  for (const selector of selectors) {
-    const desc = await page.$eval(selector, el => el.textContent?.trim() || "")
+export async function detectProductDescription(
+  page: Page
+): Promise<string | null | undefined> {
+  try {
+    // 1. Meta description (SEO)
+    const metaDesc = await page
+      .$eval('meta[name="description"]', (el) =>
+        (el as HTMLMetaElement).content.trim()
+      )
       .catch(() => null);
-    if (desc) return desc;
-  }
+    if (metaDesc) return metaDesc;
 
-  // 3. Fallback: longest paragraph on the page
-  const paragraphs = await page.$$eval("p", els =>
-    els.map(el => el.innerText.trim()).filter(Boolean)
-  );
-  if (paragraphs.length > 0) {
-    return paragraphs.sort((a, b) => b.length - a.length)[0]; // pick longest
-  }
+    // 2. Common description selectors
+    const selectors = [
+      "#description",
+      ".product-description",
+      ".description",
+      "[aria-label*='description' i]",
+      "[id*='description' i]",
+      "[class*='description' i]",
+    ];
 
-  return null;
+    for (const selector of selectors) {
+      const desc = await page
+        .$eval(selector, (el) => el.textContent?.trim() || "")
+        .catch(() => null);
+      if (desc) return desc;
+    }
+
+    // 3. Fallback: longest paragraph on the page
+    const paragraphs = await page.$$eval("p", (els) =>
+      els.map((el) => el.innerText.trim()).filter(Boolean)
+    );
+    if (paragraphs.length > 0) {
+      return paragraphs.sort((a, b) => b.length - a.length)[0]; // pick longest
+    }
+
+    return null;
+  } catch (error: any) {
+    logger.error(`Error processing detectProductDescription`, error.message);
+  }
 }
-
 
 export async function checkCriticalElements(page: Page): Promise<CheckResult> {
-  const issues: string[] = [];
+  try {
+    const issues: string[] = [];
 
-  const title = await detectProductTitle(page);
-  const price = await detectProductPrice(page);
-  const description = await detectProductDescription(page);
-  console.log('title:', title)
-  console.log('price:', price)
-  console.log('description:', description)
+    const title = await detectProductTitle(page);
+    const price = await detectProductPrice(page);
+    const description = await detectProductDescription(page);
 
-  if (!title) issues.push("Title missing");
-  if (!price) issues.push("Price missing");
-  if (!description) issues.push("Description missing");
+    if (!title) issues.push("Title missing");
+    if (!price) issues.push("Price missing");
+    if (!description) issues.push("Description missing");
 
-  return { status: issues.length ? "FAIL" : "PASS", issues };
+    return { status: issues.length ? "FAIL" : "PASS", issues };
+  } catch (err: any) {
+    logger.error(`Error processing checkCriticalElements`, err.message);
+    return { status: "FAIL", issues: ["Failed to check critical elements"] };
+  }
 }

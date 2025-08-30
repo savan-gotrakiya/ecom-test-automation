@@ -2,7 +2,6 @@
 import { Page, ElementHandle } from "playwright-core";
 import { CheckResult } from "../types";
 
-
 export async function checkProductAvailability(
   page: Page
 ): Promise<CheckResult> {
@@ -30,10 +29,7 @@ export async function checkProductAvailability(
   } catch (error: unknown) {
     return {
       status: "FAIL",
-      issues: [
-        "Error checking product availability",
-        error instanceof Error ? error.message : String(error),
-      ],
+      issues: ["Failed to check  product availability"],
     };
   }
 }

@@ -2,7 +2,6 @@
 import { Page, ElementHandle } from "playwright-core";
 import { ImageInfo } from "../types";
 
-
 export interface ImageCheckResult {
   status: "PASS" | "FAIL";
   issues: Array<{ src: string | null; issues: string[] }>;
@@ -39,9 +38,8 @@ export async function checkProductImage(
     // Wait for images to fully load and get dimensions
     for (const img of uniqueImages) {
       if (!img.src) continue;
-      const imgHandle: ElementHandle<HTMLImageElement | any> | null = await page.$(
-        `img[src="${img.src}"]`
-      );
+      const imgHandle: ElementHandle<HTMLImageElement | any> | null =
+        await page.$(`img[src="${img.src}"]`);
       if (imgHandle) {
         await imgHandle.evaluate((i) => {
           if (!i.complete) return new Promise((res) => (i.onload = res));
@@ -73,7 +71,7 @@ export async function checkProductImage(
     result.status = "FAIL";
     result.issues.push({
       src: null,
-      issues: [error instanceof Error ? error.message : String(error)],
+      issues: ["Failed to check product image"],
     });
   }
 

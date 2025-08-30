@@ -1,6 +1,6 @@
-// src/tests/productVariants.test.ts
-import { Page, ElementHandle } from "playwright-core";
+import { Page } from "playwright-core";
 import { CheckResult } from "../types";
+import { logger } from "../utils/logger";
 
 export async function checkVariants(page: Page): Promise<CheckResult> {
   const result: CheckResult = {
@@ -51,13 +51,10 @@ export async function checkVariants(page: Page): Promise<CheckResult> {
     if (variants.length === 0) {
       result.status = "FAIL";
       result.issues.push("No variant options found inside containers");
-    } else {
-      console.log("✅ Variants found:", variants);
     }
-  } catch (err: unknown) {
-    result.status = "FAIL";
-    result.issues.push("Error checking variants");
-    console.error("❌ Error in checkVariants:", err);
+  } catch (err: any) {
+    logger.error(`Error in checkVariants`, err.message);
+    return { status: "FAIL", issues: ["Failed to check variants"] };
   }
 
   return result;
