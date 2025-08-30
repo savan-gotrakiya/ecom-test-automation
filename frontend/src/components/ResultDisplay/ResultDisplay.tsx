@@ -60,7 +60,7 @@ const ResultDisplay: React.FC<Props> = ({ results }) => {
             ? [
                 {
                   label: "Console Errors",
-                  status: "Fail",
+                  status: "FAIL",
                   issues: r.consoleErrors.map((i) =>
                     typeof i === "string" ? i : JSON.stringify(i)
                   ),
@@ -71,7 +71,7 @@ const ResultDisplay: React.FC<Props> = ({ results }) => {
             ? [
                 {
                   label: "Console Warnings",
-                  status: "Fail",
+                  status: "FAIL",
                   issues: r.consoleWarnings.map((i) =>
                     typeof i === "string" ? i : JSON.stringify(i)
                   ),
@@ -82,7 +82,7 @@ const ResultDisplay: React.FC<Props> = ({ results }) => {
             ? [
                 {
                   label: "Network Failures",
-                  status: "Fail",
+                  status: "FAIL",
                   issues: r.networkFailures.map((i) =>
                     typeof i === "string" ? i : JSON.stringify(i)
                   ),
