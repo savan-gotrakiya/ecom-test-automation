@@ -57,7 +57,7 @@ export async function checkVariants(page: Page): Promise<CheckResult> {
     }
   } catch (err: any) {
     logger.error(`Error in checkVariants`, err);
-    return { status: "FAIL", issues: ["Failed to check variants"] };
+    return result;
   }
 
   return result;
