@@ -5,33 +5,36 @@ import { logger } from "../utils/logger";
 
 async function detectProductPrice(
   page: Page
-): Promise<string | undefined | null> {
+): Promise<string | null | undefined> {
   try {
     const selectors = [".price-container", ".product-price", ".price"];
+
+    // Wait for whichever selector appears first
+    const priceElement = await Promise.race(
+      selectors.map((sel) =>
+        page.waitForSelector(sel, { timeout: 2000 }).catch(() => null)
+      )
+    );
+
     let priceText: string | null = null;
 
-    for (const selector of selectors) {
-      try {
-        await page.waitForSelector(selector, { timeout: 10000 });
-        priceText = await page.textContent(selector);
-        if (priceText) break;
-      } catch {
-        // Ignore and try next selector
-      }
-    }
-
-    if (!priceText) {
+    if (priceElement) {
+      priceText = await priceElement.textContent();
+    } else {
       // Fallback: Search entire page HTML with regex
       const html = await page.content();
       const match = html.match(
         /(Rs\.?|INR|₹|\$|€|¥)\s?\d{1,3}(,\d{3})*(\.\d{1,2})?/
       );
-      if (match) priceText = match[0];
+      if (match) {
+        priceText = match[0];
+      }
     }
 
     return priceText;
   } catch (error: any) {
     logger.error(`Error processing detectProductPrice`, error.message);
+    return null;
   }
 }
 
@@ -113,9 +116,11 @@ export async function checkCriticalElements(page: Page): Promise<CheckResult> {
   try {
     const issues: string[] = [];
 
-    const title = await detectProductTitle(page);
-    const price = await detectProductPrice(page);
-    const description = await detectProductDescription(page);
+    const [title, price, description] = await Promise.allSettled([
+      detectProductTitle(page),
+      detectProductPrice(page),
+      detectProductDescription(page),
+    ]);
 
     if (!title) issues.push("Title missing");
     if (!price) issues.push("Price missing");

@@ -6,29 +6,25 @@ const logger_1 = require("../utils/logger");
 async function detectProductPrice(page) {
     try {
         const selectors = [".price-container", ".product-price", ".price"];
+        // Wait for whichever selector appears first
+        const priceElement = await Promise.race(selectors.map((sel) => page.waitForSelector(sel, { timeout: 2000 }).catch(() => null)));
         let priceText = null;
-        for (const selector of selectors) {
-            try {
-                await page.waitForSelector(selector, { timeout: 10000 });
-                priceText = await page.textContent(selector);
-                if (priceText)
-                    break;
-            }
-            catch {
-                // Ignore and try next selector
-            }
+        if (priceElement) {
+            priceText = await priceElement.textContent();
         }
-        if (!priceText) {
+        else {
             // Fallback: Search entire page HTML with regex
             const html = await page.content();
             const match = html.match(/(Rs\.?|INR|₹|\$|€|¥)\s?\d{1,3}(,\d{3})*(\.\d{1,2})?/);
-            if (match)
+            if (match) {
                 priceText = match[0];
+            }
         }
         return priceText;
     }
     catch (error) {
         logger_1.logger.error(`Error processing detectProductPrice`, error.message);
+        return null;
     }
 }
 async function detectProductTitle(page) {
@@ -92,9 +88,11 @@ async function detectProductDescription(page) {
 async function checkCriticalElements(page) {
     try {
         const issues = [];
-        const title = await detectProductTitle(page);
-        const price = await detectProductPrice(page);
-        const description = await detectProductDescription(page);
+        const [title, price, description] = await Promise.allSettled([
+            detectProductTitle(page),
+            detectProductPrice(page),
+            detectProductDescription(page),
+        ]);
         if (!title)
             issues.push("Title missing");
         if (!price)
