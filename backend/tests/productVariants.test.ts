@@ -9,17 +9,19 @@ export async function checkVariants(page: Page): Promise<CheckResult> {
   };
 
   try {
-    await page
-      .waitForSelector(
-        ".product-swatches, fieldset.variant-option, variant-picker",
-        {
-          timeout: 15000,
-          state: "attached",
-        }
-      )
-      .catch(() => null);
+    try {
+      await page
+        .waitForSelector(
+          ".product-swatches, fieldset.variant-option, variant-picker",
+          {
+            timeout: 5000,
+            state: "attached",
+          }
+        )
+        .catch(() => null);
 
-    await page.waitForTimeout(1000); // wait for lazy JS to render
+      await page.waitForTimeout(1000); // wait for lazy JS to render
+    } catch (error) {}
 
     // Try common variant containers
     const containers = await page.$$(

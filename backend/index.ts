@@ -19,7 +19,7 @@ import { chunk } from "lodash";
  */
 async function processProductPage(
   input: ProcessProductPageInput
-): Promise<ProductCheckResult> {
+): Promise<ProductCheckResult | undefined> {
   const { browser, url, password } = input;
   const reqId = uuidv4().split("-")[0];
   const profiler = new Profiler();
@@ -97,7 +97,6 @@ async function processProductPage(
     };
   } catch (err: any) {
     logger.error(` ${reqId} Error processing ${url}: ${err.message}`);
-    throw err;
   } finally {
     await page.close();
   }

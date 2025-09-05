@@ -75,7 +75,6 @@ async function processProductPage(input) {
     }
     catch (err) {
         logger_1.logger.error(` ${reqId} Error processing ${url}: ${err.message}`);
-        throw err;
     }
     finally {
         await page.close();

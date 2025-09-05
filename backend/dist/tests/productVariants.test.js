@@ -8,13 +8,16 @@ async function checkVariants(page) {
         issues: [],
     };
     try {
-        await page
-            .waitForSelector(".product-swatches, fieldset.variant-option, variant-picker", {
-            timeout: 15000,
-            state: "attached",
-        })
-            .catch(() => null);
-        await page.waitForTimeout(1000); // wait for lazy JS to render
+        try {
+            await page
+                .waitForSelector(".product-swatches, fieldset.variant-option, variant-picker", {
+                timeout: 5000,
+                state: "attached",
+            })
+                .catch(() => null);
+            await page.waitForTimeout(1000); // wait for lazy JS to render
+        }
+        catch (error) { }
         // Try common variant containers
         const containers = await page.$$("fieldset.variant-option, variant-picker form.variant-picker__form, .product-swatches, .product-variants");
         if (containers && containers?.length > 0) {
