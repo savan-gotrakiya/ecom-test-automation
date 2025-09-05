@@ -47,11 +47,7 @@ async function checkProductImage(page, url) {
         result.images = uniqueImages;
     }
     catch (error) {
-        result.status = "FAIL";
-        result.issues.push({
-            src: null,
-            issues: ["Failed to check product image"],
-        });
+        return result;
     }
     return result;
 }

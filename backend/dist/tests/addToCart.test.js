@@ -4,10 +4,17 @@ exports.checkAddToCartButton = checkAddToCartButton;
 const logger_1 = require("../utils/logger");
 async function deepSearchShadow(el) {
     try {
+        // Get the shadowRoot handle
         const shadowRootHandle = await el.evaluateHandle((e) => e.shadowRoot);
-        if (!shadowRootHandle)
+        const shadowRoot = await shadowRootHandle.jsonValue();
+        if (!shadowRoot) {
+            await shadowRootHandle.dispose(); // clean up memory
             return null;
+        }
+        // Now safely evaluate inside the shadow root
         const foundHandle = await shadowRootHandle.evaluateHandle((root) => {
+            if (!root)
+                return null;
             const allEls = Array.from(root.querySelectorAll("*"));
             for (const el of allEls) {
                 const text = (el.textContent || "").toLowerCase();
@@ -23,8 +30,11 @@ async function deepSearchShadow(el) {
             }
             return null;
         });
-        if ((await foundHandle.jsonValue()) !== null)
+        await shadowRootHandle.dispose(); // always clean up
+        if ((await foundHandle.jsonValue()) !== null) {
             return foundHandle.asElement();
+        }
+        await foundHandle.dispose();
         return null;
     }
     catch (error) {
@@ -34,7 +44,7 @@ async function deepSearchShadow(el) {
 }
 async function findAddToCartInFrame(frame) {
     try {
-        // Try known selectors first
+        // 1. Try known selectors first (fast path)
         const selectors = [
             "button.addtocart",
             "button.btn-atc",
@@ -46,23 +56,38 @@ async function findAddToCartInFrame(frame) {
             if (btn)
                 return btn;
         }
-        // Generic search in DOM
+        // 2. Generic search - limit number of elements to avoid performance issues
         const allEls = await frame.$$("body *");
-        for (const el of allEls) {
-            const text = ((await el.innerText()) || "").toLowerCase();
-            const tag = await el.evaluate((e) => e.tagName.toLowerCase());
-            const role = await el.evaluate((e) => e.getAttribute("role"));
-            const clickable = ["button", "a", "input"].includes(tag) ||
-                role === "button" ||
-                (await el.evaluate((e) => window.getComputedStyle(e).cursor === "pointer"));
-            if (clickable &&
-                /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)) {
-                return el;
+        const limitedEls = allEls.slice(0, 500); // Prevent infinite search
+        for (const el of limitedEls) {
+            try {
+                // Safely get tagName
+                const tag = await el.evaluate((e) => e.tagName.toLowerCase());
+                // Skip elements that can't be clickable
+                if (!tag)
+                    continue;
+                // Safely get innerText (only if it's an HTMLElement)
+                const text = await el.evaluate((node) => node instanceof HTMLElement ? node.innerText.toLowerCase() : "");
+                // Safely get role attribute
+                const role = await el.evaluate((e) => e.getAttribute("role"));
+                // Check if clickable
+                const clickable = ["button", "a", "input"].includes(tag) ||
+                    role === "button" ||
+                    (await el.evaluate((e) => window.getComputedStyle(e).cursor === "pointer"));
+                if (clickable &&
+                    /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)) {
+                    return el;
+                }
+                // 3. Check shadow DOM safely
+                const shadowBtn = await deepSearchShadow(el);
+                if (shadowBtn)
+                    return shadowBtn;
             }
-            // Check shadow DOM
-            const shadowBtn = await deepSearchShadow(el);
-            if (shadowBtn)
-                return shadowBtn;
+            catch (innerError) {
+                // Log once per element if needed
+                logger_1.logger.warn("Skipping element due to error:", innerError);
+                continue;
+            }
         }
         return null;
     }

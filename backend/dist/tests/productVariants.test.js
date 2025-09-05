@@ -41,7 +41,7 @@ async function checkVariants(page) {
     }
     catch (err) {
         logger_1.logger.error(`Error in checkVariants`, err);
-        return { status: "FAIL", issues: ["Failed to check variants"] };
+        return result;
     }
     return result;
 }

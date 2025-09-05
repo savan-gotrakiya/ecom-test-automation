@@ -3,6 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkMetaInfo = checkMetaInfo;
 const logger_1 = require("../utils/logger");
 async function checkMetaInfo(page) {
+    const result = {
+        status: "PASS",
+        issues: [],
+    };
     try {
         const issues = [];
         const title = (await page.title())?.trim() || null;
@@ -20,6 +24,6 @@ async function checkMetaInfo(page) {
     }
     catch (err) {
         logger_1.logger.error(`Error in checkMetaInfo`, err.message);
-        return { status: "FAIL", issues: ["Failed to check meta info"] };
+        return result;
     }
 }

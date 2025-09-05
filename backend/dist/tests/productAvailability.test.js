@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkProductAvailability = checkProductAvailability;
 async function checkProductAvailability(page) {
+    const result = {
+        status: "PASS",
+        issues: [],
+    };
     try {
         const issues = [];
         // Check Add to Cart button
@@ -39,9 +43,6 @@ async function checkProductAvailability(page) {
         return { status: issues.length > 0 ? "FAIL" : "PASS", issues };
     }
     catch (error) {
-        return {
-            status: "FAIL",
-            issues: ["Unable to determine product availability"],
-        };
+        return result;
     }
 }

@@ -6,22 +6,33 @@ async function deepSearchShadow(
   el: ElementHandle<Element>
 ): Promise<ElementHandle<Element> | null> {
   try {
+    // Get the shadowRoot handle
     const shadowRootHandle = await el.evaluateHandle(
       (e) => (e as any).shadowRoot
     );
-    if (!shadowRootHandle) return null;
+    const shadowRoot = await shadowRootHandle.jsonValue();
 
+    if (!shadowRoot) {
+      await shadowRootHandle.dispose(); // clean up memory
+      return null;
+    }
+
+    // Now safely evaluate inside the shadow root
     const foundHandle = await shadowRootHandle.evaluateHandle(
       (root: ShadowRoot) => {
+        if (!root) return null;
+
         const allEls = Array.from(root.querySelectorAll("*"));
         for (const el of allEls) {
           const text = (el.textContent || "").toLowerCase();
           const tag = el.tagName.toLowerCase();
           const role = el.getAttribute("role");
+
           const clickable =
             ["button", "a", "input"].includes(tag) ||
             role === "button" ||
             window.getComputedStyle(el).cursor === "pointer";
+
           if (
             clickable &&
             /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)
@@ -33,8 +44,13 @@ async function deepSearchShadow(
       }
     );
 
-    if ((await foundHandle.jsonValue()) !== null)
+    await shadowRootHandle.dispose(); // always clean up
+
+    if ((await foundHandle.jsonValue()) !== null) {
       return foundHandle.asElement();
+    }
+
+    await foundHandle.dispose();
     return null;
   } catch (error) {
     logger.error("Error in deepSearchShadow:", error);
@@ -46,7 +62,7 @@ async function findAddToCartInFrame(
   frame: any
 ): Promise<ElementHandle<Element> | null> {
   try {
-    // Try known selectors first
+    // 1. Try known selectors first (fast path)
     const selectors = [
       "button.addtocart",
       "button.btn-atc",
@@ -59,33 +75,49 @@ async function findAddToCartInFrame(
       if (btn) return btn;
     }
 
-    // Generic search in DOM
+    // 2. Generic search - limit number of elements to avoid performance issues
     const allEls = await frame.$$("body *");
-    for (const el of allEls) {
-      const text = ((await el.innerText()) || "").toLowerCase();
-      const tag = await el.evaluate((e: { tagName: string }) =>
-        e.tagName.toLowerCase()
-      );
-      const role = await el.evaluate(
-        (e: { getAttribute: (arg0: string) => any }) => e.getAttribute("role")
-      );
-      const clickable =
-        ["button", "a", "input"].includes(tag) ||
-        role === "button" ||
-        (await el.evaluate(
-          (e: Element) => window.getComputedStyle(e).cursor === "pointer"
-        ));
+    const limitedEls = allEls.slice(0, 500); // Prevent infinite search
 
-      if (
-        clickable &&
-        /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)
-      ) {
-        return el;
+    for (const el of limitedEls) {
+      try {
+        // Safely get tagName
+        const tag = await el.evaluate((e: Element) => e.tagName.toLowerCase());
+
+        // Skip elements that can't be clickable
+        if (!tag) continue;
+
+        // Safely get innerText (only if it's an HTMLElement)
+        const text = await el.evaluate((node: any) =>
+          node instanceof HTMLElement ? node.innerText.toLowerCase() : ""
+        );
+
+        // Safely get role attribute
+        const role = await el.evaluate((e: Element) => e.getAttribute("role"));
+
+        // Check if clickable
+        const clickable =
+          ["button", "a", "input"].includes(tag) ||
+          role === "button" ||
+          (await el.evaluate(
+            (e: Element) => window.getComputedStyle(e).cursor === "pointer"
+          ));
+
+        if (
+          clickable &&
+          /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)
+        ) {
+          return el;
+        }
+
+        // 3. Check shadow DOM safely
+        const shadowBtn = await deepSearchShadow(el);
+        if (shadowBtn) return shadowBtn;
+      } catch (innerError) {
+        // Log once per element if needed
+        logger.warn("Skipping element due to error:", innerError);
+        continue;
       }
-
-      // Check shadow DOM
-      const shadowBtn = await deepSearchShadow(el);
-      if (shadowBtn) return shadowBtn;
     }
 
     return null;
