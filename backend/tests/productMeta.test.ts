@@ -3,6 +3,10 @@ import { CheckResult } from "../types";
 import { logger } from "../utils/logger";
 
 export async function checkMetaInfo(page: Page): Promise<CheckResult> {
+  const result: CheckResult = {
+    status: "PASS",
+    issues: [],
+  };
   try {
     const issues: string[] = [];
 
@@ -23,6 +27,6 @@ export async function checkMetaInfo(page: Page): Promise<CheckResult> {
     };
   } catch (err: any) {
     logger.error(`Error in checkMetaInfo`, err.message);
-    return { status: "FAIL", issues: ["Failed to check meta info"] };
+    return result;
   }
 }

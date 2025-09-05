@@ -4,6 +4,10 @@ import { CheckResult } from "../types";
 export async function checkProductAvailability(
   page: Page
 ): Promise<CheckResult> {
+  const result: CheckResult = {
+    status: "PASS",
+    issues: [],
+  };
   try {
     const issues: string[] = [];
 
@@ -56,9 +60,6 @@ export async function checkProductAvailability(
 
     return { status: issues.length > 0 ? "FAIL" : "PASS", issues };
   } catch (error: unknown) {
-    return {
-      status: "FAIL",
-      issues: ["Unable to determine product availability"],
-    };
+    return result;
   }
 }

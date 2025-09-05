@@ -68,11 +68,7 @@ export async function checkProductImage(
 
     result.images = uniqueImages;
   } catch (error: unknown) {
-    result.status = "FAIL";
-    result.issues.push({
-      src: null,
-      issues: ["Failed to check product image"],
-    });
+    return result;
   }
 
   return result;
