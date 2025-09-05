@@ -3,61 +3,73 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkAddToCartButton = checkAddToCartButton;
 const logger_1 = require("../utils/logger");
 async function deepSearchShadow(el) {
-    const shadowRootHandle = await el.evaluateHandle((e) => e.shadowRoot);
-    if (!shadowRootHandle)
+    try {
+        const shadowRootHandle = await el.evaluateHandle((e) => e.shadowRoot);
+        if (!shadowRootHandle)
+            return null;
+        const foundHandle = await shadowRootHandle.evaluateHandle((root) => {
+            const allEls = Array.from(root.querySelectorAll("*"));
+            for (const el of allEls) {
+                const text = (el.textContent || "").toLowerCase();
+                const tag = el.tagName.toLowerCase();
+                const role = el.getAttribute("role");
+                const clickable = ["button", "a", "input"].includes(tag) ||
+                    role === "button" ||
+                    window.getComputedStyle(el).cursor === "pointer";
+                if (clickable &&
+                    /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)) {
+                    return el;
+                }
+            }
+            return null;
+        });
+        if ((await foundHandle.jsonValue()) !== null)
+            return foundHandle.asElement();
         return null;
-    const foundHandle = await shadowRootHandle.evaluateHandle((root) => {
-        const allEls = Array.from(root.querySelectorAll("*"));
+    }
+    catch (error) {
+        logger_1.logger.error("Error in deepSearchShadow:", error);
+        return null;
+    }
+}
+async function findAddToCartInFrame(frame) {
+    try {
+        // Try known selectors first
+        const selectors = [
+            "button.addtocart",
+            "button.btn-atc",
+            "[data-add-to-cart]",
+            "[data-product-form-submit]",
+        ];
+        for (const sel of selectors) {
+            const btn = await frame.$(sel);
+            if (btn)
+                return btn;
+        }
+        // Generic search in DOM
+        const allEls = await frame.$$("body *");
         for (const el of allEls) {
-            const text = (el.textContent || "").toLowerCase();
-            const tag = el.tagName.toLowerCase();
-            const role = el.getAttribute("role");
+            const text = ((await el.innerText()) || "").toLowerCase();
+            const tag = await el.evaluate((e) => e.tagName.toLowerCase());
+            const role = await el.evaluate((e) => e.getAttribute("role"));
             const clickable = ["button", "a", "input"].includes(tag) ||
                 role === "button" ||
-                window.getComputedStyle(el).cursor === "pointer";
+                (await el.evaluate((e) => window.getComputedStyle(e).cursor === "pointer"));
             if (clickable &&
                 /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)) {
                 return el;
             }
+            // Check shadow DOM
+            const shadowBtn = await deepSearchShadow(el);
+            if (shadowBtn)
+                return shadowBtn;
         }
         return null;
-    });
-    if ((await foundHandle.jsonValue()) !== null)
-        return foundHandle.asElement();
-    return null;
-}
-async function findAddToCartInFrame(frame) {
-    // Try known selectors first
-    const selectors = [
-        "button.addtocart",
-        "button.btn-atc",
-        "[data-add-to-cart]",
-        "[data-product-form-submit]",
-    ];
-    for (const sel of selectors) {
-        const btn = await frame.$(sel);
-        if (btn)
-            return btn;
     }
-    // Generic search in DOM
-    const allEls = await frame.$$("body *");
-    for (const el of allEls) {
-        const text = ((await el.innerText()) || "").toLowerCase();
-        const tag = await el.evaluate((e) => e.tagName.toLowerCase());
-        const role = await el.evaluate((e) => e.getAttribute("role"));
-        const clickable = ["button", "a", "input"].includes(tag) ||
-            role === "button" ||
-            (await el.evaluate((e) => window.getComputedStyle(e).cursor === "pointer"));
-        if (clickable &&
-            /add\s*to\s*cart|add\s*to\s*bag|buy\s*now|checkout/.test(text)) {
-            return el;
-        }
-        // Check shadow DOM
-        const shadowBtn = await deepSearchShadow(el);
-        if (shadowBtn)
-            return shadowBtn;
+    catch (error) {
+        logger_1.logger.error("Error in findAddToCartInFrame:", error);
+        return null;
     }
-    return null;
 }
 async function checkAddToCartButton(page) {
     try {
