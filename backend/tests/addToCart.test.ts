@@ -105,8 +105,8 @@ export async function checkAddToCartButton(page: Page): Promise<CheckResult> {
 
       try {
         // Wait for the button to be visible and enabled
-        await addToCartButton.waitForElementState("visible");
-        await addToCartButton.waitForElementState("enabled");
+        await addToCartButton.waitForElementState("visible", { timeout: 1000 });
+        await addToCartButton.waitForElementState("enabled", { timeout: 1000 });
 
         // Try a trial click to confirm
         await addToCartButton.click({ trial: true });
